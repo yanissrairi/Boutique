@@ -1,0 +1,47 @@
+{
+  "mcpServers": {
+    "context7": {
+      "command": "cmd",
+      "args": ["/c", "npx", "-y", "@upstash/context7-mcp@latest"]
+    },
+    "sequential-thinking": {
+      "command": "cmd",
+      "args": ["/c", "npx", "-y", "@modelcontextprotocol/server-sequential-thinking@latest"]
+    },
+    "tavily": {
+      "command": "cmd",
+      "args": ["/c", "npx", "-y", "tavily-mcp@latest"],
+      "env": {
+        "TAVILY_API_KEY": "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"
+      }
+    },
+    "mcp-ls-typescript": {
+      "command": "mcp-language-server",
+      "args": [
+        "--workspace",
+        "d:\\4_PROGRAMMATION\\0_WEB\\1_PROJETS\\Boutique",
+        "--lsp",
+        "typescript-language-server",
+        "--",
+        "--stdio"
+      ]
+    },
+    "mcp-ls-go": {
+      "command": "mcp-language-server",
+      "args": [
+        "--workspace",
+        "d:\\4_PROGRAMMATION\\0_WEB\\1_PROJETS\\Boutique",
+        "--lsp",
+        "gopls"
+      ],
+      "env": {
+        "PATH": "C:\\Users\\yanis\\go\\bin;${env:PATH}",
+        "GOPATH": "C:\\Users\\yanis\\go"
+      }
+    },
+    "playwright": {
+      "command": "cmd",
+      "args": ["/c", "npx", "-y", "@executeautomation/playwright-mcp-server@latest"]
+    }
+  }
+}
