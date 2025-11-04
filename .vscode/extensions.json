@@ -1,0 +1,37 @@
+{
+  "recommendations": [
+    // Code Quality & Formatting (ESSENTIAL)
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+
+    // Database & ORM (ESSENTIAL)
+    "Prisma.prisma",
+    "mtxr.sqltools",
+    "mtxr.sqltools-driver-pg",
+
+    // Docker & DevOps (ESSENTIAL)
+    "ms-azuretools.vscode-docker",
+
+    // CSS & Styling (ESSENTIAL)
+    "bradlc.vscode-tailwindcss",
+
+    // React & Next.js (ESSENTIAL)
+    "dsznajder.es7-react-js-snippets",
+
+    // Developer Experience (RECOMMENDED)
+    "usernamehw.errorlens",
+    "formulahendry.auto-rename-tag",
+    "christian-kohler.path-intellisense",
+    "eamodio.gitlens",
+
+    // API Testing (RECOMMENDED)
+    "rangav.vscode-thunder-client",
+
+    // Stripe Development (OPTIONAL)
+    "stripe.vscode-stripe",
+
+    // Productivity (OPTIONAL)
+    "GitHub.copilot",
+    "tabnine.tabnine-vscode"
+  ]
+}

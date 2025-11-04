@@ -1,0 +1,88 @@
+{
+  // Prettier comme formateur par défaut
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+
+  // Auto-format on save et paste
+  "editor.formatOnSave": true,
+  "editor.formatOnPaste": true,
+
+  // Auto-fix ESLint on save (SOTA 2025)
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "always",
+    "source.fixAll.format": "explicit",
+    "source.organizeImports": "explicit"
+  },
+
+  // TypeScript workspace version (Next.js 16)
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+
+  // ESLint validation (SOTA 2025)
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ],
+
+  // Prisma
+  "[prisma]": {
+    "editor.defaultFormatter": "Prisma.prisma"
+  },
+
+  // JSON files
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+
+  // Files
+  "files.eol": "\n",
+  "files.trimTrailingWhitespace": true,
+  "files.insertFinalNewline": true,
+
+  // Exclude from file explorer
+  "files.exclude": {
+    "**/.next": true,
+    "**/node_modules": true,
+    "**/.git": true,
+    "**/.turbo": true
+  },
+
+  // Search exclude
+  "search.exclude": {
+    "**/.next": true,
+    "**/node_modules": true,
+    "**/dist": true,
+    "**/build": true,
+    "**/.turbo": true,
+    "**/pnpm-lock.yaml": true
+  },
+
+  // Tailwind CSS IntelliSense
+  "tailwindCSS.experimental.classRegex": [
+    ["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
+    ["cx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"]
+  ],
+
+  // Path Intellisense
+  "typescript.suggest.paths": true,
+  "javascript.suggest.paths": true,
+
+  // GitLens (configuration minimale)
+  "gitlens.codeLens.enabled": false,
+  "gitlens.currentLine.enabled": true,
+
+  // Error Lens
+  "errorLens.enabledDiagnosticLevels": ["error", "warning"],
+  "errorLens.followCursor": "activeLine",
+
+  // Auto Rename Tag
+  "auto-rename-tag.activationOnLanguage": [
+    "html",
+    "xml",
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ]
+}
