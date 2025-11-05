@@ -1,0 +1,54 @@
+import type { NextConfig } from 'next'
+
+/**
+ * Next.js Configuration for Docker Deployment
+ *
+ * IMPORTANT: This configuration is required for Docker builds
+ * Copy this file to next.config.ts when creating your Next.js project
+ */
+
+const config: NextConfig = {
+  /**
+   * CRITICAL: Enable standalone output for Docker
+   * This creates a minimal .next/standalone folder with only necessary files
+   * Without this, Docker builds will fail
+   */
+  output: 'standalone',
+
+  /**
+   * React 19 Compiler (Auto-memoization)
+   * Eliminates manual useMemo/useCallback
+   */
+  reactCompiler: true,
+
+  /**
+   * Experimental Features
+   */
+  experimental: {
+    /**
+     * Partial Pre-Rendering (PPR)
+     * Combines static and dynamic rendering for optimal performance
+     */
+    ppr: 'incremental',
+  },
+
+  /**
+   * Image Optimization
+   * Configure for your image hosting service
+   */
+  images: {
+    // Cloudflare R2 bucket domain
+    domains: ['pub-xxxxxxxxxx.r2.dev'],
+    formats: ['image/avif', 'image/webp'],
+  },
+
+  /**
+   * Disable Next.js telemetry
+   * Already set via ENV in Dockerfile, but can be enforced here
+   */
+  // telemetry: {
+  //   enabled: false,
+  // },
+}
+
+export default config

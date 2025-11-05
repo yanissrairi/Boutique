@@ -1,0 +1,62 @@
+import { NextResponse } from 'next/server'
+
+/**
+ * Health Check Endpoint
+ *
+ * Used by Docker health checks to verify the application is running
+ * Required for: docker-compose health checks
+ *
+ * Copy this file to app/api/health/route.ts when creating your Next.js project
+ */
+
+export async function GET() {
+  return NextResponse.json(
+    {
+      status: 'ok',
+      timestamp: new Date().toISOString(),
+      service: 'medusa-storefront',
+    },
+    { status: 200 }
+  )
+}
+
+/**
+ * Optional: Add more detailed health checks
+ *
+ * Example with backend connectivity check:
+ *
+ * export async function GET() {
+ *   try {
+ *     // Check if Medusa backend is reachable
+ *     const backendUrl = process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL
+ *     const response = await fetch(`${backendUrl}/health`, {
+ *       method: 'GET',
+ *       headers: { 'Content-Type': 'application/json' },
+ *       signal: AbortSignal.timeout(3000), // 3s timeout
+ *     })
+ *
+ *     if (!response.ok) {
+ *       throw new Error('Backend unhealthy')
+ *     }
+ *
+ *     return NextResponse.json(
+ *       {
+ *         status: 'ok',
+ *         timestamp: new Date().toISOString(),
+ *         backend: 'connected',
+ *       },
+ *       { status: 200 }
+ *     )
+ *   } catch (error) {
+ *     return NextResponse.json(
+ *       {
+ *         status: 'error',
+ *         timestamp: new Date().toISOString(),
+ *         backend: 'disconnected',
+ *         error: error instanceof Error ? error.message : 'Unknown error',
+ *       },
+ *       { status: 503 }
+ *     )
+ *   }
+ * }
+ */
