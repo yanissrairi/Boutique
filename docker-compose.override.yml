@@ -1,0 +1,59 @@
+# =============================================================================
+# Development Overrides (Auto-loaded by Docker Compose)
+# =============================================================================
+# This file is automatically loaded in development when running:
+# → docker compose up -d
+#
+# ⚠️  WARNING: These settings are optimized for DEV ONLY!
+#     Never use in production - data loss may occur!
+# =============================================================================
+
+services:
+  # ---------------------------------------------------------------------------
+  # PostgreSQL - DEV Optimizations
+  # ---------------------------------------------------------------------------
+  postgres:
+    # Expose port on host for dev tools (pgAdmin, DBeaver, TablePlus, etc.)
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+
+    # Dev optimizations: faster writes, no durability guarantees
+    # ⚠️  May cause data loss on crashes - DEV ONLY!
+    command:
+      - "postgres"
+      - "-c"
+      - "fsync=off"                 # 2x faster writes (no disk sync)
+      - "-c"
+      - "synchronous_commit=off"    # Async commits
+      - "-c"
+      - "full_page_writes=off"      # Less disk I/O
+      - "-c"
+      - "max_connections=100"       # Enough for dev
+
+  # ---------------------------------------------------------------------------
+  # Redis - DEV Optimizations
+  # ---------------------------------------------------------------------------
+  redis:
+    # Expose port on host for dev tools (RedisInsight, Another Redis Desktop Manager, etc.)
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+
+    # No password in dev for simplicity
+    # Production uses Vercel KV with authentication
+
+  # ---------------------------------------------------------------------------
+  # Medusa - DEV Optimizations
+  # ---------------------------------------------------------------------------
+  medusa:
+    # Expose port on host
+    ports:
+      - "${MEDUSA_PORT:-9000}:9000"
+
+    # Hot-reload for development
+    volumes:
+      - ./backend:/app
+      - /app/node_modules  # Prevent node_modules from being overwritten
+
+    # Override to development mode
+    environment:
+      NODE_ENV: development

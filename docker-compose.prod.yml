@@ -1,0 +1,78 @@
+# =============================================================================
+# Production Configuration (Hetzner VPS)
+# =============================================================================
+# Usage: docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+#
+# 🏗️  Production Stack:
+# ✅ Medusa Backend (Dockerized on Hetzner VPS)
+# ✅ PostgreSQL via Supabase (managed, external)
+# ✅ Redis via Vercel KV (managed, external)
+#
+# 📝 Required .env variables:
+# - DATABASE_URL: Supabase connection string
+# - REDIS_URL: Vercel KV connection string (KV_URL from Vercel)
+# - JWT_SECRET: Strong secret for JWT tokens
+# - COOKIE_SECRET: Strong secret for cookies
+# =============================================================================
+
+services:
+  # ---------------------------------------------------------------------------
+  # PostgreSQL: DISABLED (Using Supabase)
+  # ---------------------------------------------------------------------------
+  postgres:
+    deploy:
+      replicas: 0  # ❌ Don't start - using Supabase instead
+
+  # ---------------------------------------------------------------------------
+  # Redis: DISABLED (Using Vercel KV)
+  # ---------------------------------------------------------------------------
+  redis:
+    deploy:
+      replicas: 0  # ❌ Don't start - using Vercel KV instead
+
+  # ---------------------------------------------------------------------------
+  # Medusa Backend: Production Configuration
+  # ---------------------------------------------------------------------------
+  medusa:
+    # Production restart policy
+    restart: always
+
+    # Expose port for reverse proxy (nginx/caddy)
+    ports:
+      - "${MEDUSA_PORT:-9000}:9000"
+
+    # Production environment overrides
+    environment:
+      # Production mode
+      NODE_ENV: production
+
+      # External database (Supabase)
+      # Example: postgresql://postgres.[PROJECT-ID]:[PASSWORD]@aws-0-eu-central-1.pooler.supabase.com:6543/postgres
+      DATABASE_URL: ${DATABASE_URL}
+
+      # External Redis (Vercel KV)
+      # Example: redis://default:[TOKEN]@[REGION].kv.vercel-storage.com:6379
+      REDIS_URL: ${REDIS_URL}
+
+      # Public URLs
+      MEDUSA_BACKEND_URL: ${MEDUSA_BACKEND_URL}
+      STORE_CORS: ${STORE_CORS}
+      ADMIN_CORS: ${ADMIN_CORS}
+
+      # Security: Strong secrets required!
+      JWT_SECRET: ${JWT_SECRET}
+      COOKIE_SECRET: ${COOKIE_SECRET}
+
+      # Disable admin in production (optional - use separate admin deployment)
+      DISABLE_MEDUSA_ADMIN: ${DISABLE_MEDUSA_ADMIN:-false}
+
+    # Remove volumes in production (no hot-reload needed)
+    volumes: []
+
+    # Production health check
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:9000/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
