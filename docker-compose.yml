@@ -84,6 +84,34 @@ services:
     networks:
       - medusa_network
 
+  # ---------------------------------------------------------------------------
+  # Frontend Next.js Storefront
+  # ---------------------------------------------------------------------------
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: medusa-frontend
+    restart: unless-stopped
+    depends_on:
+      - medusa
+    environment:
+      # Node environment
+      NODE_ENV: ${NODE_ENV:-development}
+
+      # Medusa backend connection (internal Docker network)
+      NEXT_PUBLIC_MEDUSA_BACKEND_URL: ${NEXT_PUBLIC_MEDUSA_BACKEND_URL:-http://medusa:9000}
+
+      # Public URLs (for client-side)
+      NEXT_PUBLIC_BASE_URL: ${NEXT_PUBLIC_BASE_URL:-http://localhost:3000}
+
+      # Next.js optimization
+      NEXT_TELEMETRY_DISABLED: 1
+    env_file:
+      - .env
+    networks:
+      - medusa_network
+
 # =============================================================================
 # Volumes
 # =============================================================================

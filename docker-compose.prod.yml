@@ -76,3 +76,21 @@ services:
       timeout: 10s
       retries: 3
       start_period: 40s
+
+  # ---------------------------------------------------------------------------
+  # Frontend: DISABLED (Deployed on Vercel)
+  # ---------------------------------------------------------------------------
+  frontend:
+    deploy:
+      replicas: 0  # ❌ Don't start - using Vercel hosting instead
+    #
+    # Production deployment handled by Vercel:
+    # - Automatic SSR/ISR/Static Generation
+    # - Edge Functions support
+    # - Global CDN distribution
+    # - Automatic HTTPS and custom domains
+    # - Zero-config deployments from Git
+    #
+    # Environment variables to set in Vercel Dashboard:
+    # - NEXT_PUBLIC_MEDUSA_BACKEND_URL: https://api.yourdomain.com
+    # - NEXT_PUBLIC_BASE_URL: https://yourdomain.com

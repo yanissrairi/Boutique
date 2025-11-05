@@ -57,3 +57,23 @@ services:
     # Override to development mode
     environment:
       NODE_ENV: development
+
+  # ---------------------------------------------------------------------------
+  # Frontend - DEV Optimizations
+  # ---------------------------------------------------------------------------
+  frontend:
+    # Expose port on host
+    ports:
+      - "${FRONTEND_PORT:-3000}:3000"
+
+    # Hot-reload for development (Turbopack Fast Refresh)
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules  # Prevent node_modules from being overwritten
+      - /app/.next        # Prevent .next from being overwritten
+
+    # Override to development mode
+    environment:
+      NODE_ENV: development
+      # Use Turbopack for development (Next.js 16 default)
+      TURBOPACK: 1
