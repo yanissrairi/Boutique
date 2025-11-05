@@ -21,12 +21,15 @@ RUN apk add --no-cache \
     g++ \
     && rm -rf /var/cache/apk/*
 
+# Enable Corepack for pnpm
+RUN corepack enable && corepack prepare pnpm@latest --activate
+
 # Copy package files
-COPY package*.json ./
+COPY package.json pnpm-lock.yaml ./
 
 # Install production dependencies only
-RUN npm ci --only=production --omit=dev && \
-    npm cache clean --force
+RUN pnpm install --prod --frozen-lockfile && \
+    pnpm store prune
 
 # -----------------------------------------------------------------------------
 # Stage 2: Builder
@@ -35,19 +38,22 @@ FROM node:24-alpine AS builder
 
 WORKDIR /app
 
+# Enable Corepack for pnpm
+RUN corepack enable && corepack prepare pnpm@latest --activate
+
 # Copy package files
-COPY package*.json ./
+COPY package.json pnpm-lock.yaml ./
 
 # Install ALL dependencies (including devDependencies for build)
-RUN npm ci && \
-    npm cache clean --force
+RUN pnpm install --frozen-lockfile && \
+    pnpm store prune
 
 # Copy source code
 COPY . .
 
 # Build Medusa (TypeScript → JavaScript)
 # Remove "|| true" to fail on build errors in production
-RUN npm run build
+RUN pnpm run build
 
 # -----------------------------------------------------------------------------
 # Stage 3: Production Runtime
@@ -85,4 +91,4 @@ HEALTHCHECK --interval=30s --timeout=3s --start-period=40s --retries=3 \
 ENTRYPOINT ["/usr/bin/dumb-init", "--"]
 
 # Start Medusa
-CMD ["npm", "start"]
+CMD ["pnpm", "start"]
